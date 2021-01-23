@@ -253,15 +253,15 @@ def load_mnist():
     DATASET_TRAIN_PATH_COLAB = "../input/skin-cancer9-classesisic/Skin cancer ISIC The International Skin Imaging Collaboration/Train"
     DATASET_TEST_PATH_COLAB = "../input/skin-cancer9-classesisic/Skin cancer ISIC The International Skin Imaging Collaboration/Test"
     
-    MAP_CHARACTERS = {
-        0: 'actinic keratosis', 1: 'basal cell carcinoma', 2: 'dermatofibroma',
-        3: 'melanoma', 4: 'nevus', 5: 'pigmented benign keratosis', 6: 'seborrheic keratosis', 
-        7: 'squamous cell carcinoma', 8: 'vascular lesion'
-     }
-   
     # MAP_CHARACTERS = {
-    # 0: 'actinic keratosis', 1: 'dermatofibroma', 2: 'seborrheic keratosis'
-    # }
+    #     0: 'actinic keratosis', 1: 'basal cell carcinoma', 2: 'dermatofibroma',
+    #     3: 'melanoma', 4: 'nevus', 5: 'pigmented benign keratosis', 6: 'seborrheic keratosis', 
+    #     7: 'squamous cell carcinoma', 8: 'vascular lesion'
+    #  }
+   
+    MAP_CHARACTERS = {
+    0: 'actinic keratosis', 1: 'dermatofibroma', 2: 'seborrheic keratosis'
+    }
 
     # Vamos a estandariza todas las imágenes a tamaño 64x64
     # Se define aquí el tamaño que se utilizará más adelante
