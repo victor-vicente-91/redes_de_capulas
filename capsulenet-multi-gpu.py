@@ -118,7 +118,7 @@ if __name__ == "__main__":
         model, eval_model, manipulate_model = CapsNet(input_shape=x_train.shape[1:],
                                                       n_class=len(np.unique(np.argmax(y_train, 1))),
                                                       routings=args.routings,
-                                                     batch_size=args.batch_size)
+                                                      batch_size=args.batch_size)
     model.summary()
     plot_model(model, to_file=args.save_dir+'/model.png', show_shapes=True)
 
