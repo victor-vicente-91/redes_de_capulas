@@ -141,7 +141,7 @@ def train(model,  # type: models.Model
     train_datagen = ImageDataGenerator(width_shift_range=args.shift_fraction,
                                            height_shift_range=args.shift_fraction)  # shift up to 2 pixel for MNIST
         #generator = train_datagen.flow(x, y, batch_size=batch_size)
-    target_size=(28,28) 
+    target_size=(600,600) 
     generator = train_datagen.flow_from_directory(path_train,target_size=target_size, batch_size=args.batch_size)
 
     test_datagen = ImageDataGenerator(rescale=1./255)
@@ -333,7 +333,7 @@ if __name__ == "__main__":
     #(x_train, y_train), (x_test, y_test) = load_mnist()
 
     # define model
-    model, eval_model, manipulate_model = CapsNet(input_shape=(28,28,1),
+    model, eval_model, manipulate_model = CapsNet(input_shape=(600,600,1),
                                                   n_class=9,
                                                   routings=args.routings,
                                                   batch_size=args.batch_size)
