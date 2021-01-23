@@ -333,7 +333,7 @@ if __name__ == "__main__":
     #(x_train, y_train), (x_test, y_test) = load_mnist()
 
     # define model
-    model, eval_model, manipulate_model = CapsNet(input_shape=(240,240,1),
+    model, eval_model, manipulate_model = CapsNet(input_shape=(240,240,3),
                                                   n_class=9,
                                                   routings=args.routings,
                                                   batch_size=args.batch_size)
