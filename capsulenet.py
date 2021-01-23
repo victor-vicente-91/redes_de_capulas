@@ -142,7 +142,7 @@ def train(model,  # type: models.Model
                                            height_shift_range=args.shift_fraction)  # shift up to 2 pixel for MNIST
         #generator = train_datagen.flow(x, y, batch_size=batch_size)
     target_size=(28,28) 
-    generator = train_datagen.flow_from_directory(path_test,target_size=target_size, batch_size=args.batch_size)
+    generator = train_datagen.flow_from_directory(path_train,target_size=target_size, batch_size=args.batch_size)
 
     test_datagen = ImageDataGenerator(rescale=1./255)
 
