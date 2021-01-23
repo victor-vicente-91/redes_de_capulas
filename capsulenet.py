@@ -260,7 +260,7 @@ def load_mnist():
     #  }
    
     MAP_CHARACTERS = {
-    0: 'actinic keratosis', 1: 'dermatofibroma', 2: 'seborrheic keratosis'
+    0: 'dermatofibroma', 1: 'seborrheic keratosis'
     }
 
     # Vamos a estandariza todas las imágenes a tamaño 64x64
