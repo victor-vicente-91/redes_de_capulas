@@ -250,8 +250,8 @@ def load_mnist():
     # y_train = to_categorical(y_train.astype('float32'))
     # y_test = to_categorical(y_test.astype('float32'))
     #DATASET_TRAIN_PATH_COLAB = "/content/drive/MyDrive/ISIC 2018/Skin cancer ISIC The International Skin Imaging Collaboration/Train"
-    DATASET_TRAIN_PATH_COLAB = "../input/skin-cancer9-classesisic/Skin\ cancer\ ISIC\ The\ International\ Skin\ Imaging\ Collaboration/Train"
-    DATASET_TEST_PATH_COLAB = "../input/skin-cancer9-classesisic/Skin\ cancer\ ISIC\ The\ International\ Skin\ Imaging\ Collaboration/Test"
+    DATASET_TRAIN_PATH_COLAB = "../input/skin-cancer9-classesisic/Skin cancer ISIC The International Skin Imaging Collaboration/Train"
+    DATASET_TEST_PATH_COLAB = "../input/skin-cancer9-classesisic/Skin cancer ISIC The International Skin Imaging Collaboration/Test"
     
     MAP_CHARACTERS = {
         0: 'actinic keratosis', 1: 'basal cell carcinoma', 2: 'dermatofibroma',
