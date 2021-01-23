@@ -191,13 +191,92 @@ def manipulate_latent(model, data, args):
 
 def load_mnist():
     # the data, shuffled and split between train and test sets
-    from tensorflow.keras.datasets import mnist
-    (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    # from tensorflow.keras.datasets import mnist
+    # (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-    x_train = x_train.reshape(-1, 28, 28, 1).astype('float32') / 255.
-    x_test = x_test.reshape(-1, 28, 28, 1).astype('float32') / 255.
+    # x_train = x_train.reshape(-1, 28, 28, 1).astype('float32') / 255.
+    # x_test = x_test.reshape(-1, 28, 28, 1).astype('float32') / 255.
+    # y_train = to_categorical(y_train.astype('float32'))
+    # y_test = to_categorical(y_test.astype('float32'))
+
+
+    def load_train_set(dirname, map_characters, verbose=True):
+        import cv2
+        import os
+        import numpy as np 
+        import keras
+        import matplotlib.pyplot as plt
+        import glob
+        from keras.utils.np_utils import to_categorical
+        from sklearn.model_selection import train_test_split
+        """Esta función carga los datos de training en imágenes.
+        
+        Como las imágenes tienen tamaños distintas, utilizamos la librería opencv
+        para hacer un resize y adaptarlas todas a tamaño IMG_SIZE x IMG_SIZE.
+        
+        Args:
+            dirname: directorio completo del que leer los datos
+            map_characters: variable de mapeo entre labels y personajes
+            verbose: si es True, muestra información de las imágenes cargadas
+            
+        Returns:
+            X, y: X es un array con todas las imágenes cargadas con tamaño
+                    IMG_SIZE x IMG_SIZE
+                    y es un array con las labels de correspondientes a cada imagen
+        """
+        X_train = []
+        y_train = []
+        for label, character in map_characters.items():        
+            files = os.listdir(os.path.join(dirname, character))
+            images = [file for file in files if file.endswith("jpg")]
+            if verbose:
+                print("Leyendo {} imágenes encontradas de {}".format(len(images), character))
+            for image_name in images:
+                image = cv2.imread(os.path.join(dirname, character, image_name))
+                #X_train.append(image / 255.0)
+                #image = cv2.resize(image,(IMG_SIZE_X, IMG_SIZE_Y)).astype('float32') / 255
+                #image = to_categorical(image.astype('float32'))
+                #X_train.append(image)
+                X_train.append(cv2.resize(image,(IMG_SIZE_X, IMG_SIZE_Y)))
+                #X_train.append(cv2.resize(image,(IMG_SIZE, IMG_SIZE)).astype('float32') / 255)
+                y_train.append(label)
+        return np.array(X_train), np.array(y_train)
+    # the data, shuffled and split between train and test sets
+    # from tensorflow.keras.datasets import mnist
+    # (x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+    # x_train = x_train.reshape(-1, 28, 28, 1).astype('float32') / 255.
+    # x_test = x_test.reshape(-1, 28, 28, 1).astype('float32') / 255.
+    # y_train = to_categorical(y_train.astype('float32'))
+    # y_test = to_categorical(y_test.astype('float32'))
+    #DATASET_TRAIN_PATH_COLAB = "/content/drive/MyDrive/ISIC 2018/Skin cancer ISIC The International Skin Imaging Collaboration/Train"
+    DATASET_TRAIN_PATH_COLAB = "../input/skin-cancer9-classesisic/Skin cancer ISIC The International Skin Imaging Collaboration/Train"
+    DATASET_TEST_PATH_COLAB = "../input/skin-cancer9-classesisic/Skin cancer ISIC The International Skin Imaging Collaboration/Test"
+    
+    MAP_CHARACTERS = {
+        0: 'actinic keratosis', 1: 'basal cell carcinoma', 2: 'dermatofibroma',
+        3: 'melanoma', 4: 'nevus', 5: 'pigmented benign keratosis', 6: 'seborrheic keratosis', 
+        7: 'squamous cell carcinoma', 8: 'vascular lesion'
+     }
+   
+    # MAP_CHARACTERS = {
+    # 0: 'actinic keratosis', 1: 'dermatofibroma', 2: 'seborrheic keratosis'
+    # }
+
+    # Vamos a estandariza todas las imágenes a tamaño 64x64
+    # Se define aquí el tamaño que se utilizará más adelante
+    IMG_SIZE_X = 450
+    IMG_SIZE_Y = 600
+
+    x_train, y_train = load_train_set(DATASET_TRAIN_PATH_COLAB, MAP_CHARACTERS)
+    x_test, y_test = load_train_set(DATASET_TEST_PATH_COLAB, MAP_CHARACTERS)  
+
+    x_train = x_train.astype('float32') / 255.
+    x_test = x_test.astype('float32') / 255.
     y_train = to_categorical(y_train.astype('float32'))
     y_test = to_categorical(y_test.astype('float32'))
+
+
     return (x_train, y_train), (x_test, y_test)
 
 
