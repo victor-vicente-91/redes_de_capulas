@@ -28,9 +28,6 @@ from capsulelayers import CapsuleLayer, PrimaryCap, Length, Mask
 
 K.set_image_data_format('channels_last')
 
-path_train = "../input/skin-cancer9-classesisic/Skin cancer ISIC The International Skin Imaging Collaboration/Train"
-path_test = "../input/skin-cancer9-classesisic/Skin cancer ISIC The International Skin Imaging Collaboration/Test"
-
 
 def CapsNet(input_shape, n_class, routings, batch_size):
     """
@@ -96,7 +93,7 @@ def margin_loss(y_true, y_pred):
 
 
 def train(model,  # type: models.Model
-        args):
+          data, args):
     """
     Training a CapsuleNet
     :param model: the CapsuleNet model
@@ -105,7 +102,7 @@ def train(model,  # type: models.Model
     :return: The trained model
     """
     # unpacking the data
-    #(x_train, y_train), (x_test, y_test) = data
+    (x_train, y_train), (x_test, y_test) = data
 
     # callbacks
     log = callbacks.CSVLogger(args.save_dir + '/log.csv')
@@ -129,28 +126,16 @@ def train(model,  # type: models.Model
     def train_generator(x, y, batch_size, shift_fraction=0.):
         train_datagen = ImageDataGenerator(width_shift_range=shift_fraction,
                                            height_shift_range=shift_fraction)  # shift up to 2 pixel for MNIST
-        #generator = train_datagen.flow(x, y, batch_size=batch_size)
-        generator = train_datagen.flow_from_directory(path_train, path_test, batch_size=batch_size)
+        generator = train_datagen.flow(x, y, batch_size=batch_size)
         while 1:
             x_batch, y_batch = generator.next()
             yield (x_batch, y_batch), (y_batch, x_batch)
 
     # Training with data augmentation. If shift_fraction=0., no augmentation.
-    #model.fit(train_generator(x_train, y_train, args.batch_size, args.shift_fraction),
-    
-    train_datagen = ImageDataGenerator(width_shift_range=args.shift_fraction,
-                                           height_shift_range=args.shift_fraction)  # shift up to 2 pixel for MNIST
-        #generator = train_datagen.flow(x, y, batch_size=batch_size)
-    generator = train_datagen.flow_from_directory(path_train, path_test,target_size =(450,600), batch_size=args.batch_size)
-
-    test_datagen = ImageDataGenerator(rescale=1./255)
-
-    test_generator = test_datagen.flow_from_directory(path_test,target_size=(450,600),batch_size=args.batch_size)
-
-    model.fit(generator,
-              steps_per_epoch=int(100 / args.batch_size),
+    model.fit(train_generator(x_train, y_train, args.batch_size, args.shift_fraction),
+              steps_per_epoch=int(y_train.shape[0] / args.batch_size),
               epochs=args.epochs,
-              validation_data=test_generator, batch_size=args.batch_size,
+              validation_data=((x_test, y_test), (y_test, x_test)), batch_size=args.batch_size,
               callbacks=[log, checkpoint, lr_decay])
     # End: Training with data augmentation -----------------------------------------------------------------------#
 
@@ -265,6 +250,8 @@ def load_mnist():
     # y_train = to_categorical(y_train.astype('float32'))
     # y_test = to_categorical(y_test.astype('float32'))
     #DATASET_TRAIN_PATH_COLAB = "/content/drive/MyDrive/ISIC 2018/Skin cancer ISIC The International Skin Imaging Collaboration/Train"
+    DATASET_TRAIN_PATH_COLAB = "../input/skin-cancer9-classesisic/Skin cancer ISIC The International Skin Imaging Collaboration/Train"
+    DATASET_TEST_PATH_COLAB = "../input/skin-cancer9-classesisic/Skin cancer ISIC The International Skin Imaging Collaboration/Test"
     
     # MAP_CHARACTERS = {
     #     0: 'actinic keratosis', 1: 'basal cell carcinoma', 2: 'dermatofibroma',
@@ -329,11 +316,11 @@ if __name__ == "__main__":
         os.makedirs(args.save_dir)
 
     # load data
-    #(x_train, y_train), (x_test, y_test) = load_mnist()
+    (x_train, y_train), (x_test, y_test) = load_mnist()
 
     # define model
-    model, eval_model, manipulate_model = CapsNet(input_shape=(450,600),
-                                                  n_class=9,
+    model, eval_model, manipulate_model = CapsNet(input_shape=x_train.shape[1:],
+                                                  n_class=len(np.unique(np.argmax(y_train, 1))),
                                                   routings=args.routings,
                                                   batch_size=args.batch_size)
     model.summary()
@@ -342,7 +329,7 @@ if __name__ == "__main__":
     if args.weights is not None:  # init the model weights with provided one
         model.load_weights(args.weights)
     if not args.testing:
-        train(model=model, args=args)
+        train(model=model, data=((x_train, y_train), (x_test, y_test)), args=args)
     else:  # as long as weights are given, will run testing
         if args.weights is None:
             print('No weights are provided. Will test using random initialized weights.')
