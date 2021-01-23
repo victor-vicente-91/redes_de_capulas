@@ -151,8 +151,8 @@ def train(model,  # type: models.Model
     model.fit(generator,
               steps_per_epoch=int(100 / args.batch_size),
               epochs=args.epochs,
-              validation_data=test_generator, batch_size=args.batch_size,
-              callbacks=[log, checkpoint, lr_decay])
+              validation_data=test_generator, batch_size=args.batch_size)
+              #callbacks=[log, checkpoint, lr_decay])
     # End: Training with data augmentation -----------------------------------------------------------------------#
 
     model.save_weights(args.save_dir + '/trained_model.h5')
