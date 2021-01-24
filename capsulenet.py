@@ -303,7 +303,7 @@ if __name__ == "__main__":
     # setting the hyper parameters
     parser = argparse.ArgumentParser(description="Capsule Network on MNIST.")
     parser.add_argument('--epochs', default=50, type=int)
-    parser.add_argument('--batch_size', default=100, type=int)
+    parser.add_argument('--batch_size', default=20, type=int)
     parser.add_argument('--lr', default=0.001, type=float,
                         help="Initial learning rate")
     parser.add_argument('--lr_decay', default=0.9, type=float,
@@ -333,7 +333,7 @@ if __name__ == "__main__":
     #(x_train, y_train), (x_test, y_test) = load_mnist()
 
     # define model
-    model, eval_model, manipulate_model = CapsNet(input_shape=(600,600,1),
+    model, eval_model, manipulate_model = CapsNet(input_shape=(600,600,3),
                                                   n_class=9,
                                                   routings=args.routings,
                                                   batch_size=args.batch_size)
