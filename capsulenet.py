@@ -149,7 +149,7 @@ def train(model,  # type: models.Model
     test_generator = test_datagen.flow_from_directory(path_test,target_size=target_size,batch_size=args.batch_size)
 
     model.fit(generator,
-              steps_per_epoch=int(10682 / args.batch_size),
+              steps_per_epoch=int(100 / args.batch_size),
               epochs=args.epochs,
               validation_data=test_generator)
               #callbacks=[log, checkpoint, lr_decay])
