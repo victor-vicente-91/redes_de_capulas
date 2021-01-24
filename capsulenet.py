@@ -126,14 +126,14 @@ def train(model,  # type: models.Model
     """
 
     # Begin: Training with data augmentation ---------------------------------------------------------------------#
-    def train_generator(x, y, batch_size, shift_fraction=0.):
-        train_datagen = ImageDataGenerator(width_shift_range=shift_fraction,
-                                           height_shift_range=shift_fraction)  # shift up to 2 pixel for MNIST
-        #generator = train_datagen.flow(x, y, batch_size=batch_size)
-        generator = train_datagen.flow_from_directory(path_train, batch_size=batch_size)
-        while 1:
-            x_batch, y_batch = generator.next()
-            yield (x_batch, y_batch), (y_batch, x_batch)
+    # def train_generator(x, y, batch_size, shift_fraction=0.):
+    #     train_datagen = ImageDataGenerator(width_shift_range=shift_fraction,
+    #                                        height_shift_range=shift_fraction)  # shift up to 2 pixel for MNIST
+    #     #generator = train_datagen.flow(x, y, batch_size=batch_size)
+    #     generator = train_datagen.flow_from_directory(path_train, batch_size=batch_size)
+    #     while 1:
+    #         x_batch, y_batch = generator.next()
+    #         yield (x_batch, y_batch), (y_batch, x_batch)
 
     # Training with data augmentation. If shift_fraction=0., no augmentation.
     #model.fit(train_generator(x_train, y_train, args.batch_size, args.shift_fraction),
@@ -147,7 +147,7 @@ def train(model,  # type: models.Model
 
     test_datagen = ImageDataGenerator(rescale=1./255)
 
-    test_generator = test_datagen.flow_from_directory(path_test,target_size=target_size,batch_size=args.batch_size)
+    test_generator = test_datagen.flow_from_directory(path_train,target_size=target_size,batch_size=args.batch_size)
 
     model.fit(generator,
               steps_per_epoch=int(100 / args.batch_size),
