@@ -149,8 +149,6 @@ def train(model,  # type: models.Model
 
     test_generator = test_datagen.flow_from_directory(path_train,target_size=target_size,batch_size=args.batch_size)
 
-    print("training")
-
     model.fit(generator,
               steps_per_epoch=int(100 / args.batch_size),
               epochs=args.epochs)
@@ -305,7 +303,7 @@ if __name__ == "__main__":
 
     # setting the hyper parameters
     parser = argparse.ArgumentParser(description="Capsule Network on MNIST.")
-    parser.add_argument('--epochs', default=3, type=int)
+    parser.add_argument('--epochs', default=50, type=int)
     parser.add_argument('--batch_size', default=10, type=int)
     parser.add_argument('--lr', default=0.001, type=float,
                         help="Initial learning rate")
@@ -336,7 +334,7 @@ if __name__ == "__main__":
     #(x_train, y_train), (x_test, y_test) = load_mnist()
 
     # define model
-    model, eval_model, manipulate_model = CapsNet(input_shape=(224,224,1),
+    model, eval_model, manipulate_model = CapsNet(input_shape=(224,224),
                                                   n_class=9,
                                                   routings=args.routings,
                                                   batch_size=args.batch_size)
