@@ -149,6 +149,8 @@ def train(model,  # type: models.Model
 
     test_generator = test_datagen.flow_from_directory(path_train,target_size=target_size,batch_size=args.batch_size)
 
+    print("training")
+
     model.fit(generator,
               steps_per_epoch=int(100 / args.batch_size),
               epochs=args.epochs)
@@ -303,7 +305,7 @@ if __name__ == "__main__":
 
     # setting the hyper parameters
     parser = argparse.ArgumentParser(description="Capsule Network on MNIST.")
-    parser.add_argument('--epochs', default=50, type=int)
+    parser.add_argument('--epochs', default=3, type=int)
     parser.add_argument('--batch_size', default=10, type=int)
     parser.add_argument('--lr', default=0.001, type=float,
                         help="Initial learning rate")
